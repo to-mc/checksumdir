@@ -32,10 +32,10 @@ def dirhash(dirname, hashfunc='md5'):
         raise TypeError('{} is not a directory.'.format(dirname))
     hashvalues = []
     for root, dirs, files in os.walk(dirname, topdown=True):
-        if not re.match(r'/\.', root):
+        if not re.search(r'/\.', root):
             hashvalues.extend([_filehash(os.path.join(root, f),
-                                     hash_func) for f in files if not
-                           f.startswith('.') and not re.match(r'/.', f)])
+                                         hash_func) for f in files if not
+                               f.startswith('.') and not re.search(r'/\.', f)])
     return _reduce_hash(hashvalues, hash_func)
 
 
