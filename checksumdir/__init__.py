@@ -14,6 +14,9 @@ import os
 import hashlib
 import re
 
+import pkg_resources
+__version__ = pkg_resources.require("checksumdir")[0].version
+
 
 HASH_FUNCS = {
     'md5': hashlib.md5,
