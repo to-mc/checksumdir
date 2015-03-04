@@ -20,7 +20,7 @@ setup(
     long_description=read('README.rst'),
     license="MIT",
     keywords="hash checksum md5 directory",
-    url="http://github.com/cakepietoast",
+    url="http://github.com/cakepietoast/checksumdir",
     classifiers=[
         "Topic :: Utilities",
         "License :: OSI Approved :: MIT License",
