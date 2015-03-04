@@ -11,11 +11,11 @@ Usage
 
 .. code-block:: python
 
-    from checksumdir import hashdir
+    from checksumdir import dirhash
 
     directory = '/path/to/directory/'
-    md5hash = hashdir(directory, 'md5')
-    sha1hash = hashdir(directory, 'sha1')
+    md5hash = dirhash(directory, 'md5')
+    sha1hash = dirhash(directory, 'sha1')
 
 
 Or to use the CLI:
