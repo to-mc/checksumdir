@@ -14,10 +14,10 @@ Usage
 
     from checksumdir import dirhash
 
-    directory = '/path/to/directory/'
-    md5hash = dirhash(directory, 'md5')
-    sha1hash = dirhash(directory, 'sha1', excluded_files=['package.json'])
-    sha1hash = dirhash(directory, 'sha256', excluded_extensions=['pyc'])
+    directory  = '/path/to/directory/'
+    md5hash    = dirhash(directory, 'md5')
+    sha1hash   = dirhash(directory, 'sha1', excluded_files=['package.json'])
+    sha256hash = dirhash(directory, 'sha256', excluded_extensions=['pyc'])
 
 
 Or to use the CLI:
