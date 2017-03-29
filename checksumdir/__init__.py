@@ -15,8 +15,8 @@ import hashlib
 import re
 
 import pkg_resources
-__version__ = pkg_resources.require("checksumdir")[0].version
 
+__version__ = pkg_resources.require("checksumdir")[0].version
 
 HASH_FUNCS = {
     'md5': hashlib.md5,
@@ -26,7 +26,7 @@ HASH_FUNCS = {
 }
 
 
-def dirhash(dirname, hashfunc='md5', excluded_files=None):
+def dirhash(dirname, hashfunc='md5', excluded_files=None, ignore_hidden=False):
     hash_func = HASH_FUNCS.get(hashfunc)
     if not hash_func:
         raise NotImplementedError('{} not implemented.'.format(hashfunc))
@@ -38,11 +38,15 @@ def dirhash(dirname, hashfunc='md5', excluded_files=None):
         raise TypeError('{} is not a directory.'.format(dirname))
     hashvalues = []
     for root, dirs, files in os.walk(dirname, topdown=True):
-        if not re.search(r'/\.', root):
+        if ignore_hidden:
+            if not re.search(r'/\.', root):
+                hashvalues.extend([_filehash(os.path.join(root, f),
+                                             hash_func) for f in files if not
+                                   f.startswith('.') and not re.search(r'/\.', f)
+                                   and f not in excluded_files])
+        else:
             hashvalues.extend([_filehash(os.path.join(root, f),
-                                         hash_func) for f in files if not
-                               f.startswith('.') and not re.search(r'/\.', f)
-                               and f not in excluded_files])
+                                         hash_func) for f in files if f not in excluded_files])
     return _reduce_hash(hashvalues, hash_func)
 
 
