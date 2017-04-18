@@ -26,10 +26,11 @@ def main():
     parser.add_argument('-e', '--excluded-files', nargs='+',
                         help='List of excluded files')
     parser.add_argument('--ignore-hidden', action='store_true', default=False)
+    parser.add_argument('--follow-links', action='store_true', default=False)
 
     args = parser.parse_args()
     print(checksumdir.dirhash(args.directory, args.algorithm,
-                              args.excluded_files, args.ignore_hidden))
+                              args.excluded_files, args.ignore_hidden, args.follow_links))
 
 if __name__ == '__main__':
     main()
