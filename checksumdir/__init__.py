@@ -26,7 +26,7 @@ HASH_FUNCS = {
 }
 
 
-def dirhash(dirname, hashfunc='md5', excluded_files=None, ignore_hidden=False):
+def dirhash(dirname, hashfunc='md5', excluded_files=None, ignore_hidden=False, followlinks=False):
     hash_func = HASH_FUNCS.get(hashfunc)
     if not hash_func:
         raise NotImplementedError('{} not implemented.'.format(hashfunc))
@@ -37,7 +37,7 @@ def dirhash(dirname, hashfunc='md5', excluded_files=None, ignore_hidden=False):
     if not os.path.isdir(dirname):
         raise TypeError('{} is not a directory.'.format(dirname))
     hashvalues = []
-    for root, dirs, files in os.walk(dirname, topdown=True):
+    for root, dirs, files in os.walk(dirname, topdown=True, followlinks=followlinks):
         if ignore_hidden:
             if not re.search(r'/\.', root):
                 hashvalues.extend([_filehash(os.path.join(root, f),
