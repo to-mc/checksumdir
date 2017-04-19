@@ -8,19 +8,18 @@ def read(fname):
 
 setup(
     name="checksumdir",
-    version="1.1.1",
+    version="1.1.2",
     packages=['checksumdir'],
     entry_points={
         'console_scripts': ['checksumdir=checksumdir.cli:main'],
     },
-    author="Tom McCarthy",
-    author_email="tmac.se@gmail.com",
-    description="Simple package to compute a single deterministic hash of the "
-                "file contents of a directory.",
+    author="Tom McCarthy, M. Niedzielski",
+    author_email="tmac.se@gmail.com, mark@x-powered-by.info",
+    description="Compute a single hash of the file contents of a directory.",
     long_description=read('README.rst'),
     license="MIT",
     keywords="hash checksum md5 directory",
-    url="http://github.com/cakepietoast/checksumdir",
+    url="http://github.com/MNiedzielski/checksumdir",
     classifiers=[
         "Topic :: Utilities",
         "License :: OSI Approved :: MIT License",
