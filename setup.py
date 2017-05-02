@@ -8,7 +8,7 @@ def read(fname):
 
 setup(
     name="checksumdir",
-    version="1.1.2",
+    version="1.1.4",
     packages=['checksumdir'],
     entry_points={
         'console_scripts': ['checksumdir=checksumdir.cli:main'],
@@ -19,7 +19,7 @@ setup(
     long_description=read('README.rst'),
     license="MIT",
     keywords="hash checksum md5 directory",
-    url="http://github.com/MNiedzielski/checksumdir",
+    url="http://github.com/cakepietoast/checksumdir",
     classifiers=[
         "Topic :: Utilities",
         "License :: OSI Approved :: MIT License",
