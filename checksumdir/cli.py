@@ -16,7 +16,7 @@ import checksumdir
 VERSION = checksumdir.__version__
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description='Determine the hash for directory.')
     parser.add_argument('-v', '--version', action='version',
                         version='checksumdir %s' % VERSION)
@@ -43,6 +43,7 @@ def main():
             excluded_extensions=args.excluded_extensions
         )
     )
+
 
 if __name__ == '__main__':
     main()

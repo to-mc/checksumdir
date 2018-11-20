@@ -13,6 +13,9 @@ dirhash('/path/to/directory', 'md5')
 import os
 import hashlib
 import re
+from typing import Callable
+from typing import List
+from typing import Optional
 
 import pkg_resources
 
@@ -26,8 +29,14 @@ HASH_FUNCS = {
 }
 
 
-def dirhash(dirname, hashfunc='md5', excluded_files=None, ignore_hidden=False,
-            followlinks=False, excluded_extensions=None):
+def dirhash(
+    dirname: str,
+    hashfunc: str = "md5",
+    excluded_files: Optional[List[str]] = None,
+    ignore_hidden: bool = False,
+    followlinks: bool = False,
+    excluded_extensions: Optional[List[str]] = None,
+) -> str:
     hash_func = HASH_FUNCS.get(hashfunc)
     if not hash_func:
         raise NotImplementedError('{} not implemented.'.format(hashfunc))
@@ -64,7 +73,7 @@ def dirhash(dirname, hashfunc='md5', excluded_files=None, ignore_hidden=False,
     return _reduce_hash(hashvalues, hash_func)
 
 
-def _filehash(filepath, hashfunc):
+def _filehash(filepath: str, hashfunc: Callable) -> str:
     hasher = hashfunc()
     blocksize = 64 * 1024
     with open(filepath, 'rb') as fp:
@@ -76,7 +85,7 @@ def _filehash(filepath, hashfunc):
     return hasher.hexdigest()
 
 
-def _reduce_hash(hashlist, hashfunc):
+def _reduce_hash(hashlist: List[str], hashfunc: Callable) -> str:
     hasher = hashfunc()
     for hashvalue in sorted(hashlist):
         hasher.update(hashvalue.encode('utf-8'))
