@@ -32,4 +32,6 @@ setup(
         "Programming Language :: Python :: 3.3",
         "Programming Language :: Python :: 3.4",
         ],
+    zip_safe=False,
+    package_data={"checksumdir": ["py.typed", "__init__.pyi"]}
 )
