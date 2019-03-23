@@ -40,27 +40,24 @@ def dirhash(dirname, hashfunc='md5', excluded_files=None, ignore_hidden=False,
 
     if not os.path.isdir(dirname):
         raise TypeError('{} is not a directory.'.format(dirname))
+
     hashvalues = []
     for root, dirs, files in os.walk(dirname, topdown=True, followlinks=followlinks):
-        if ignore_hidden:
-            if not re.search(r'/\.', root):
-                hashvalues.extend(
-                    [_filehash(os.path.join(root, f),
-                               hash_func) for f in files if not
-                     f.startswith('.') and not re.search(r'/\.', f)
-                     and f not in excluded_files
-                     and f.split('.')[-1:][0] not in excluded_extensions
-                     ]
-                )
-        else:
-            hashvalues.extend(
-                [
-                    _filehash(os.path.join(root, f), hash_func) 
-                    for f in files 
-                    if f not in excluded_files
-                    and f.split('.')[-1:][0] not in excluded_extensions
-                ]
-            )
+        if ignore_hidden and re.search(r'/\.', root):
+            continue
+
+        for fname in files:
+            if ignore_hidden and fname.startswith('.'):
+                continue
+
+            if fname.split('.')[-1:][0] in excluded_extensions:
+                continue
+
+            if fname in excluded_files:
+                continue
+
+            hashvalues.append(_filehash(os.path.join(root, fname), hash_func))
+
     return _reduce_hash(hashvalues, hash_func)
 
 
