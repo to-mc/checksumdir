@@ -67,6 +67,10 @@ def dirhash(dirname, hashfunc='md5', excluded_files=None, ignore_hidden=False,
 def _filehash(filepath, hashfunc):
     hasher = hashfunc()
     blocksize = 64 * 1024
+
+    if not os.path.exists(filepath):
+        return hasher.hexdigest()
+
     with open(filepath, 'rb') as fp:
         while True:
             data = fp.read(blocksize)
