@@ -8,7 +8,7 @@ def read(fname):
 
 setup(
     name="checksumdir",
-    version="1.1.5",
+    version="1.1.6",
     packages=['checksumdir'],
     entry_points={
         'console_scripts': ['checksumdir=checksumdir.cli:main'],
