@@ -13,6 +13,7 @@ dirhash('/path/to/directory', 'md5')
 import os
 import hashlib
 import re
+from joblib import Parallel, delayed
 
 import pkg_resources
 
@@ -26,7 +27,7 @@ HASH_FUNCS = {
 }
 
 
-def dirhash(dirname, hashfunc='md5', excluded_files=None, ignore_hidden=False, followlinks=False):
+def dirhash(dirname, hashfunc='md5', excluded_files=None, ignore_hidden=False, followlinks=False, parallel=False):
     hash_func = HASH_FUNCS.get(hashfunc)
     if not hash_func:
         raise NotImplementedError('{} not implemented.'.format(hashfunc))
@@ -36,29 +37,38 @@ def dirhash(dirname, hashfunc='md5', excluded_files=None, ignore_hidden=False, f
 
     if not os.path.isdir(dirname):
         raise TypeError('{} is not a directory.'.format(dirname))
-    hashvalues = []
+    fileslist = []
     for root, dirs, files in os.walk(dirname, topdown=True, followlinks=followlinks):
         if ignore_hidden:
             if not re.search(r'/\.', root):
-                hashvalues.extend([_filehash(os.path.join(root, f),
-                                             hash_func) for f in files if not
+                fileslist.extend([os.path.join(root, f) for f in files if not
                                    f.startswith('.') and not re.search(r'/\.', f)
                                    and f not in excluded_files])
         else:
-            hashvalues.extend([_filehash(os.path.join(root, f),
-                                         hash_func) for f in files if f not in excluded_files])
+            fileslist.extend([os.path.join(root, f) for f in files if f not in excluded_files])
+
+    if parallel:
+        hashvalues = Parallel(n_jobs=100, prefer='threads')(delayed(_filehash)(f, hash_func) for f in fileslist)
+    else:
+        hashvalues = [_filehash(f, hash_func) for f in fileslist]
+
     return _reduce_hash(hashvalues, hash_func)
 
 
 def _filehash(filepath, hashfunc):
     hasher = hashfunc()
     blocksize = 64 * 1024
-    with open(filepath, 'rb') as fp:
-        while True:
-            data = fp.read(blocksize)
-            if not data:
-                break
-            hasher.update(data)
+    try:
+        with open(filepath, 'rb') as fp:
+            while True:
+                data = fp.read(blocksize)
+                if not data:
+                    break
+                hasher.update(data)
+    except:
+        pass
+        #"The file %s no longer exists."%filepath
+
     return hasher.hexdigest()
 
 

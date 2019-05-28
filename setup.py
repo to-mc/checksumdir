@@ -18,6 +18,7 @@ setup(
     description="Simple package to compute a single deterministic hash of the "
                 "file contents of a directory.",
     long_description=read('README.rst'),
+    install_requires=['joblib==0.13.2'],
     license="MIT",
     keywords="hash checksum md5 directory",
     url="http://github.com/cakepietoast/checksumdir",
