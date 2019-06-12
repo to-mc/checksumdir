@@ -31,12 +31,15 @@ def main():
                         help='Follow soft links')
     parser.add_argument('-x', '--excluded-extensions', nargs='+',
                         help='List of excluded file extensions.')
+    parser.add_argument('-d', '--depth', choices=('deep','shallow'), default='deep',
+                        help='Use file bytes (deep) or metadata (shallow) for hashing.')
 
     args = parser.parse_args()
     print(
         checksumdir.dirhash(
             dirname=args.directory,
             hashfunc=args.algorithm,
+            datafunc=args.depth,
             excluded_files=args.excluded_files,
             ignore_hidden=args.ignore_hidden,
             followlinks=args.follow_links,
