@@ -46,6 +46,9 @@ def dirhash(dirname, hashfunc='md5', excluded_files=None, ignore_hidden=False,
         if ignore_hidden and re.search(r'/\.', root):
             continue
 
+        dirs.sort()
+        files.sort()
+
         for fname in files:
             if ignore_hidden and fname.startswith('.'):
                 continue
