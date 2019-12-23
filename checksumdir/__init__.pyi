@@ -11,7 +11,8 @@ def dirhash(
     excluded_files: Optional[List[str]]=None,
     ignore_hidden: bool=False,
     followlinks: bool=False,
-    excluded_extensions: Optional[List[str]]=None
+    excluded_extensions: Optional[List[str]]=None,
+    include_paths: bool=False
 ) -> str: ...
 
 def _filehash(filepath: str, hashfunc: Callable) -> str: ...

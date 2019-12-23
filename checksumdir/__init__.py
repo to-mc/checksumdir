@@ -27,7 +27,7 @@ HASH_FUNCS = {
 
 
 def dirhash(dirname, hashfunc='md5', excluded_files=None, ignore_hidden=False,
-            followlinks=False, excluded_extensions=None):
+            followlinks=False, excluded_extensions=None,include_paths=False):
     hash_func = HASH_FUNCS.get(hashfunc)
     if not hash_func:
         raise NotImplementedError('{} not implemented.'.format(hashfunc))
@@ -61,6 +61,11 @@ def dirhash(dirname, hashfunc='md5', excluded_files=None, ignore_hidden=False,
 
             hashvalues.append(_filehash(os.path.join(root, fname), hash_func))
 
+            if include_paths:
+                hasher = hash_func()
+                hasher.update(os.path.join(root, fname))
+                hashvalues.append(hasher.hexdigest())
+                
     return _reduce_hash(hashvalues, hash_func)
 
 

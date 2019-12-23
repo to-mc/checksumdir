@@ -31,6 +31,8 @@ def main():
                         help='Follow soft links')
     parser.add_argument('-x', '--excluded-extensions', nargs='+',
                         help='List of excluded file extensions.')
+    parser.add_argument('-p', '--include-paths', action='store_true', default=False,
+                        help='Include file path in the hash')
 
     args = parser.parse_args()
     print(
@@ -40,7 +42,8 @@ def main():
             excluded_files=args.excluded_files,
             ignore_hidden=args.ignore_hidden,
             followlinks=args.follow_links,
-            excluded_extensions=args.excluded_extensions
+            excluded_extensions=args.excluded_extensions,
+            include_paths=args.include_paths
         )
     )
 
