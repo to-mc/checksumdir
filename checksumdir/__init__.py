@@ -63,9 +63,12 @@ def dirhash(dirname, hashfunc='md5', excluded_files=None, ignore_hidden=False,
 
             if include_paths:
                 hasher = hash_func()
-                hasher.update(os.path.join(root, fname))
+                # get the resulting relative path into array of elements
+                path_list = os.path.relpath(os.path.join(root, fname)).split(os.sep)
+                # compute the hash on joined list, removes all os specific separators
+                hasher.update(''.join(path_list))
                 hashvalues.append(hasher.hexdigest())
-                
+
     return _reduce_hash(hashvalues, hash_func)
 
 
