@@ -2,6 +2,16 @@
 Checksumdir
 ***********
 
+|badge1| |badge2|
+
+
+.. |badge1| image:: https://img.shields.io/pypi/dm/checksumdir   
+    :alt: PyPI - Downloads
+    :target: https://pypi.org/project/checksumdir/
+
+.. |badge2| image:: https://badge.fury.io/py/checksumdir.svg
+    :target: https://pypi.org/project/checksumdir/
+
 A simple module for creating a single hash for a directory of files, with file contents;
 ignoring any metadata such as file name.  Options exist to also exclude specific files
 or files with specific extensions.
