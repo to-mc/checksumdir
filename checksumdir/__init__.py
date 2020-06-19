@@ -25,12 +25,14 @@ HASH_FUNCS = {
     'sha512': hashlib.sha512
 }
 
-
 def dirhash(dirname, hashfunc='md5', excluded_files=None, ignore_hidden=False,
-            followlinks=False, excluded_extensions=None):
+            followlinks=False, excluded_extensions=None, datafunc='deep'):
     hash_func = HASH_FUNCS.get(hashfunc)
+    data_func = DATA_FUNCS.get(datafunc)
     if not hash_func:
         raise NotImplementedError('{} not implemented.'.format(hashfunc))
+    if not data_func:
+        raise NotImplementedError('{} not implemented.'.format(datafunc))
 
     if not excluded_files:
         excluded_files = []
@@ -59,10 +61,21 @@ def dirhash(dirname, hashfunc='md5', excluded_files=None, ignore_hidden=False,
             if fname in excluded_files:
                 continue
 
-            hashvalues.append(_filehash(os.path.join(root, fname), hash_func))
+            hashvalues.append(data_func(os.path.join(root, fname), hash_func))
 
     return _reduce_hash(hashvalues, hash_func)
 
+def _stathash(filepath, hashfunc):
+    hasher = hashfunc()
+    if not os.path.exists(filepath):
+        return hasher.hexdigest()
+
+    statinfo = os.stat(filepath)
+    hasher.update(filepath.encode('UTF-8'))
+
+    for attr in statinfo:
+        hasher.update(str(attr).encode('UTF-8'))
+    return hasher.hexdigest()
 
 def _filehash(filepath, hashfunc):
     hasher = hashfunc()
@@ -79,9 +92,15 @@ def _filehash(filepath, hashfunc):
             hasher.update(data)
     return hasher.hexdigest()
 
-
 def _reduce_hash(hashlist, hashfunc):
     hasher = hashfunc()
     for hashvalue in sorted(hashlist):
         hasher.update(hashvalue.encode('utf-8'))
     return hasher.hexdigest()
+
+DATA_FUNCS = {
+    'shallow': _stathash,
+    'deep': _filehash
+}
+
+
