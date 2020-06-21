@@ -10,8 +10,8 @@ dirhash('/path/to/directory', 'md5')
 
 """
 
-import os
 import hashlib
+import os
 import re
 
 import pkg_resources
@@ -19,18 +19,25 @@ import pkg_resources
 __version__ = pkg_resources.require("checksumdir")[0].version
 
 HASH_FUNCS = {
-    'md5': hashlib.md5,
-    'sha1': hashlib.sha1,
-    'sha256': hashlib.sha256,
-    'sha512': hashlib.sha512
+    "md5": hashlib.md5,
+    "sha1": hashlib.sha1,
+    "sha256": hashlib.sha256,
+    "sha512": hashlib.sha512,
 }
 
 
-def dirhash(dirname, hashfunc='md5', excluded_files=None, ignore_hidden=False,
-            followlinks=False, excluded_extensions=None,include_paths=False):
+def dirhash(
+    dirname,
+    hashfunc="md5",
+    excluded_files=None,
+    ignore_hidden=False,
+    followlinks=False,
+    excluded_extensions=None,
+    include_paths=False
+):
     hash_func = HASH_FUNCS.get(hashfunc)
     if not hash_func:
-        raise NotImplementedError('{} not implemented.'.format(hashfunc))
+        raise NotImplementedError("{} not implemented.".format(hashfunc))
 
     if not excluded_files:
         excluded_files = []
@@ -39,21 +46,21 @@ def dirhash(dirname, hashfunc='md5', excluded_files=None, ignore_hidden=False,
         excluded_extensions = []
 
     if not os.path.isdir(dirname):
-        raise TypeError('{} is not a directory.'.format(dirname))
+        raise TypeError("{} is not a directory.".format(dirname))
 
     hashvalues = []
     for root, dirs, files in os.walk(dirname, topdown=True, followlinks=followlinks):
-        if ignore_hidden and re.search(r'/\.', root):
+        if ignore_hidden and re.search(r"/\.", root):
             continue
 
         dirs.sort()
         files.sort()
 
         for fname in files:
-            if ignore_hidden and fname.startswith('.'):
+            if ignore_hidden and fname.startswith("."):
                 continue
 
-            if fname.split('.')[-1:][0] in excluded_extensions:
+            if fname.split(".")[-1:][0] in excluded_extensions:
                 continue
 
             if fname in excluded_files:
@@ -79,7 +86,7 @@ def _filehash(filepath, hashfunc):
     if not os.path.exists(filepath):
         return hasher.hexdigest()
 
-    with open(filepath, 'rb') as fp:
+    with open(filepath, "rb") as fp:
         while True:
             data = fp.read(blocksize)
             if not data:
@@ -91,5 +98,5 @@ def _filehash(filepath, hashfunc):
 def _reduce_hash(hashlist, hashfunc):
     hasher = hashfunc()
     for hashvalue in sorted(hashlist):
-        hasher.update(hashvalue.encode('utf-8'))
+        hasher.update(hashvalue.encode("utf-8"))
     return hasher.hexdigest()

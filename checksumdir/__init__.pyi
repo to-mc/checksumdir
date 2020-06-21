@@ -1,9 +1,5 @@
 from pathlib import Path
-
-from typing import Callable
-from typing import List
-from typing import Optional
-from typing import Union
+from typing import Callable, List, Optional, Union
 
 def dirhash(
     dirname: Union[str, Path],
@@ -14,9 +10,7 @@ def dirhash(
     excluded_extensions: Optional[List[str]]=None,
     include_paths: bool=False
 ) -> str: ...
-
 def _filehash(filepath: str, hashfunc: Callable) -> str: ...
-
 def _reduce_hash(hashlist: List[str], hashfunc: Callable) -> str: ...
 
 __version__: str
