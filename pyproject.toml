@@ -1,7 +1,7 @@
 [tool]
 [tool.poetry]
 name = "checksumdir"
-version = "1.1.7"
+version = "1.1.8"
 description = "Compute a single hash of the file contents of a directory."
 license = "MIT"
 keywords = ["hash", "checksum", "md5", "directory"]
