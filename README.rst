@@ -7,7 +7,7 @@ Checksumdir
 
 .. |badge1| image:: https://img.shields.io/pypi/dm/checksumdir   
     :alt: PyPI - Downloads
-    :target: https://pypi.org/project/checksumdir/
+    :target: https://pypistats.org/packages/checksumdir
 
 .. |badge2| image:: https://badge.fury.io/py/checksumdir.svg
     :target: https://pypi.org/project/checksumdir/
