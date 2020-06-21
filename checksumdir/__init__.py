@@ -33,6 +33,7 @@ def dirhash(
     ignore_hidden=False,
     followlinks=False,
     excluded_extensions=None,
+    include_paths=False
 ):
     hash_func = HASH_FUNCS.get(hashfunc)
     if not hash_func:
@@ -66,6 +67,14 @@ def dirhash(
                 continue
 
             hashvalues.append(_filehash(os.path.join(root, fname), hash_func))
+
+            if include_paths:
+                hasher = hash_func()
+                # get the resulting relative path into array of elements
+                path_list = os.path.relpath(os.path.join(root, fname)).split(os.sep)
+                # compute the hash on joined list, removes all os specific separators
+                hasher.update(''.join(path_list).encode('utf-8'))
+                hashvalues.append(hasher.hexdigest())
 
     return _reduce_hash(hashvalues, hash_func)
 
