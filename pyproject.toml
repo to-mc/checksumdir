@@ -1,0 +1,14 @@
+[tool]
+[tool.poetry]
+name = "checksumdir"
+version = "1.1.7"
+description = "Compute a single hash of the file contents of a directory."
+license = "MIT"
+keywords = ["hash", "checksum", "md5", "directory"]
+classifiers = ["Topic :: Utilities", "License :: OSI Approved :: MIT License", "Operating System :: OS Independent", "Programming Language :: Python", "Programming Language :: Python :: 2", "Programming Language :: Python :: 3"]
+homepage = "http://github.com/cakepietoast/checksumdir"
+authors = ["Tom McCarthy <tmac.se@gmail.com>"]
+readme = "README.rst"
+
+[tool.poetry.dependencies]
+python = "*"
