@@ -71,7 +71,7 @@ def dirhash(
             if include_paths:
                 hasher = hash_func()
                 # get the resulting relative path into array of elements
-                path_list = os.path.relpath(os.path.join(root, fname)).split(os.sep)
+                path_list = os.path.relpath(os.path.join(root, fname), dirname).split(os.sep)
                 # compute the hash on joined list, removes all os specific separators
                 hasher.update(''.join(path_list).encode('utf-8'))
                 hashvalues.append(hasher.hexdigest())
