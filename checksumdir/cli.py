@@ -63,7 +63,7 @@ def main():
             hashfunc=args.algorithm,
             excluded_files=args.excluded_files,
             ignore_hidden=args.ignore_hidden,
-            followlinks=args.follow_links,
+            follow_links=args.follow_links,
             excluded_extensions=args.excluded_extensions,
             include_paths=args.include_paths
         )
