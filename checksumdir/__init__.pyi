@@ -5,10 +5,12 @@ def dirhash(
     dirname: Union[str, Path],
     hashfunc: str='md5',
     excluded_files: Optional[List[str]]=None,
-    ignore_hidden: bool=False,
-    followlinks: bool=False,
     excluded_extensions: Optional[List[str]]=None,
-    include_paths: bool=False
+    excluded_dirs: Optional[List[str]]=None,
+    ignore_hidden: bool=False,
+    follow_links: bool=False,
+    include_paths: bool=False,
+    debug: bool=False
 ) -> str: ...
 def _filehash(filepath: str, hashfunc: Callable) -> str: ...
 def _reduce_hash(hashlist: List[str], hashfunc: Callable) -> str: ...

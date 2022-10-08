@@ -11,6 +11,7 @@ dirhash('/path/to/directory', 'md5')
 """
 
 import hashlib
+import logging
 import os
 import re
 
@@ -25,19 +26,36 @@ HASH_FUNCS = {
     "sha512": hashlib.sha512,
 }
 
+_LOGGER = logging.Logger(__name__)
+
 
 def dirhash(
-    dirname,
-    hashfunc="md5",
-    excluded_files=None,
-    ignore_hidden=False,
-    followlinks=False,
-    excluded_extensions=None,
-    include_paths=False
+        dirname,
+        hash_method="md5",
+        excluded_files=None,
+        excluded_extensions=None,
+        excluded_dirs=None,
+        ignore_hidden=False,
+        follow_links=False,
+        include_paths=False,
+        debug=False,
 ):
-    hash_func = HASH_FUNCS.get(hashfunc)
+    """
+
+    :param dirname: Need to be an absolute path
+    :param hash_method: Supported methods are [md5,sha1,sha256,sha512]
+    :param excluded_files:
+    :param excluded_extensions:
+    :param excluded_dirs:
+    :param ignore_hidden:
+    :param follow_links:
+    :param include_paths:
+    :param debug:
+    :return:
+    """
+    hash_func = HASH_FUNCS.get(hash_method)
     if not hash_func:
-        raise NotImplementedError("{} not implemented.".format(hashfunc))
+        raise NotImplementedError("{} not implemented.".format(hash_method))
 
     if not excluded_files:
         excluded_files = []
@@ -45,18 +63,28 @@ def dirhash(
     if not excluded_extensions:
         excluded_extensions = []
 
+    if not excluded_dirs:
+        excluded_dirs = []
+
     if not os.path.isdir(dirname):
         raise TypeError("{} is not a directory.".format(dirname))
 
-    hashvalues = []
-    for root, dirs, files in os.walk(dirname, topdown=True, followlinks=followlinks):
+    hash_values = []
+    for root, dirs, files in os.walk(dirname, topdown=True, followlinks=follow_links):
         if ignore_hidden and re.search(r"/\.", root):
             continue
 
-        dirs.sort()
-        files.sort()
+        # Check the directory name against the excluded dirs
+        if os.path.split(root)[1] in excluded_dirs:
+            if debug:
+                _LOGGER.info(f"Skipping root {root} as in -> {excluded_dirs}")
+            continue
+        sorted_files = sorted(files)
 
-        for fname in files:
+        if debug:
+            _LOGGER.info(f"Processing root: {root} files: {sorted_files} dirs: {dirs}")
+
+        for fname in sorted_files:
             if ignore_hidden and fname.startswith("."):
                 continue
 
@@ -66,17 +94,17 @@ def dirhash(
             if fname in excluded_files:
                 continue
 
-            hashvalues.append(_filehash(os.path.join(root, fname), hash_func))
-
+            hash_value = _filehash(os.path.join(root, fname), hash_func)
+            hash_values.append(hash_value)
             if include_paths:
                 hasher = hash_func()
                 # get the resulting relative path into array of elements
                 path_list = os.path.relpath(os.path.join(root, fname)).split(os.sep)
                 # compute the hash on joined list, removes all os specific separators
                 hasher.update(''.join(path_list).encode('utf-8'))
-                hashvalues.append(hasher.hexdigest())
+                hash_values.append(hasher.hexdigest())
 
-    return _reduce_hash(hashvalues, hash_func)
+    return _reduce_hash(hash_values, hash_func)
 
 
 def _filehash(filepath, hashfunc):
