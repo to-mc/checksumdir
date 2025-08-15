@@ -25,9 +25,9 @@ jobs:
         poetry install
     - name: Run all tests, linting and baselines
       run: |
-        poetry run flake8
-        poetry run isort
-        poetry run black
+        poetry run flake8 checksumdir/
+        poetry run isort checksumdir/ --check --diff
+        poetry run black checksumdir/ --check
     - name: Build python package and wheel
       run: poetry build
     - name: Upload to PyPi test
