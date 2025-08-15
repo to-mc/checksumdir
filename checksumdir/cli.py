@@ -17,10 +17,10 @@ import checksumdir
 VERSION = checksumdir.__version__
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="Determine the hash for directory.")
     parser.add_argument(
-        "-v", "--version", action="version", version="checksumdir %s" % VERSION
+        "-v", "--version", action="version", version=f"checksumdir {VERSION}"
     )
     parser.add_argument("directory", help="Directory for which to generate hash.")
     parser.add_argument(
