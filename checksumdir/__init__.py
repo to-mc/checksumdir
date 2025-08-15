@@ -13,14 +13,16 @@ dirhash('/path/to/directory', 'md5')
 import hashlib
 import os
 import re
-from typing import List, Optional, Callable
+from typing import Callable, List, Optional
 
 try:
     from importlib.metadata import version
+
     __version__ = version("checksumdir")
 except ImportError:
     # Fallback for older Python versions
     import pkg_resources
+
     __version__ = pkg_resources.require("checksumdir")[0].version
 
 HASH_FUNCS = {
@@ -38,7 +40,7 @@ def dirhash(
     ignore_hidden: bool = False,
     followlinks: bool = False,
     excluded_extensions: Optional[List[str]] = None,
-    include_paths: bool = False
+    include_paths: bool = False,
 ) -> str:
     hash_func = HASH_FUNCS.get(hashfunc)
     if not hash_func:
@@ -78,7 +80,7 @@ def dirhash(
                 # get the resulting relative path into array of elements
                 path_list = os.path.relpath(os.path.join(root, fname)).split(os.sep)
                 # compute the hash on joined list, removes all os specific separators
-                hasher.update(''.join(path_list).encode('utf-8'))
+                hasher.update("".join(path_list).encode("utf-8"))
                 hashvalues.append(hasher.hexdigest())
 
     return _reduce_hash(hashvalues, hash_func)
