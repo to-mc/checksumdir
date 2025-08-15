@@ -11,7 +11,6 @@ classifiers = [
     "Operating System :: OS Independent", 
     "Programming Language :: Python", 
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -23,12 +22,12 @@ authors = ["Tom McCarthy <tmac.se@gmail.com>"]
 readme = "README.rst"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 
 [tool.poetry.group.dev.dependencies]
-flake8 = "^3.8.3"
-black = "^19.10b0"
-isort = "^4.3.21"
+flake8 = "^7.0.0"
+black = "^24.0.0"
+isort = "^5.13.0"
 
 [tool.poetry.scripts]
 checksumdir = 'checksumdir.cli:main'
