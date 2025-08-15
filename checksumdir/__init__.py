@@ -44,10 +44,10 @@ def dirhash(
     if not hash_func:
         raise NotImplementedError(f"{hashfunc} not implemented.")
 
-    if excluded_files is None:
+    if not excluded_files:
         excluded_files = []
 
-    if excluded_extensions is None:
+    if not excluded_extensions:
         excluded_extensions = []
 
     if not os.path.isdir(dirname):
