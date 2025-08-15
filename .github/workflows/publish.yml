@@ -12,7 +12,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v1
       with:
-        python-version: "3.8"
+        python-version: "3.13"
     - name: Set release notes tag
       run: |
         export RELEASE_TAG_VERSION=${{ github.event.release.tag_name }}
